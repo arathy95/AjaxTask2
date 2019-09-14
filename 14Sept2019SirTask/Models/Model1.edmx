@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Database1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_City">
+          <Key>
+            <PropertyRef Name="cityid" />
+          </Key>
+          <Property Name="cityid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cityname" Type="varchar" MaxLength="50" />
+          <Property Name="FKstateid" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_Country">
+          <Key>
+            <PropertyRef Name="countryid" />
+          </Key>
+          <Property Name="countryid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="countryname" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_State">
+          <Key>
+            <PropertyRef Name="stateid" />
+          </Key>
+          <Property Name="stateid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="statename" Type="varchar" MaxLength="50" />
+          <Property Name="FKcountryid" Type="int" />
+        </EntityType>
+        <Association Name="FK__tbl_City__FKstat__36B12243">
+          <End Role="tbl_State" Type="Self.tbl_State" Multiplicity="0..1" />
+          <End Role="tbl_City" Type="Self.tbl_City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_State">
+              <PropertyRef Name="stateid" />
+            </Principal>
+            <Dependent Role="tbl_City">
+              <PropertyRef Name="FKstateid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbl_State__FKcou__25869641">
+          <End Role="tbl_Country" Type="Self.tbl_Country" Multiplicity="0..1" />
+          <End Role="tbl_State" Type="Self.tbl_State" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Country">
+              <PropertyRef Name="countryid" />
+            </Principal>
+            <Dependent Role="tbl_State">
+              <PropertyRef Name="FKcountryid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database1ModelStoreContainer">
+          <EntitySet Name="tbl_City" EntityType="Self.tbl_City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Country" EntityType="Self.tbl_Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_State" EntityType="Self.tbl_State" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tbl_City__FKstat__36B12243" Association="Self.FK__tbl_City__FKstat__36B12243">
+            <End Role="tbl_State" EntitySet="tbl_State" />
+            <End Role="tbl_City" EntitySet="tbl_City" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbl_State__FKcou__25869641" Association="Self.FK__tbl_State__FKcou__25869641">
+            <End Role="tbl_Country" EntitySet="tbl_Country" />
+            <End Role="tbl_State" EntitySet="tbl_State" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_Country">
+          <Key>
+            <PropertyRef Name="countryid" />
+          </Key>
+          <Property Name="countryid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="countryname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_State" Relationship="Self.FK__tbl_State__FKcou__25869641" FromRole="tbl_Country" ToRole="tbl_State" />
+        </EntityType>
+        <EntityType Name="tbl_State">
+          <Key>
+            <PropertyRef Name="stateid" />
+          </Key>
+          <Property Name="stateid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="statename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FKcountryid" Type="Int32" />
+          <NavigationProperty Name="tbl_Country" Relationship="Self.FK__tbl_State__FKcou__25869641" FromRole="tbl_State" ToRole="tbl_Country" />
+          <NavigationProperty Name="tbl_City" Relationship="Database1Model.FK__tbl_City__FKstat__36B12243" FromRole="tbl_State" ToRole="tbl_City" />
+        </EntityType>
+        <Association Name="FK__tbl_State__FKcou__25869641">
+          <End Role="tbl_Country" Type="Self.tbl_Country" Multiplicity="0..1" />
+          <End Role="tbl_State" Type="Self.tbl_State" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Country">
+              <PropertyRef Name="countryid" />
+            </Principal>
+            <Dependent Role="tbl_State">
+              <PropertyRef Name="FKcountryid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_Country" EntityType="Self.tbl_Country" />
+          <EntitySet Name="tbl_State" EntityType="Self.tbl_State" />
+          <AssociationSet Name="FK__tbl_State__FKcou__25869641" Association="Self.FK__tbl_State__FKcou__25869641">
+            <End Role="tbl_Country" EntitySet="tbl_Country" />
+            <End Role="tbl_State" EntitySet="tbl_State" />
+          </AssociationSet>
+          <EntitySet Name="tbl_City" EntityType="Database1Model.tbl_City" />
+          <AssociationSet Name="FK__tbl_City__FKstat__36B12243" Association="Database1Model.FK__tbl_City__FKstat__36B12243">
+            <End Role="tbl_State" EntitySet="tbl_State" />
+            <End Role="tbl_City" EntitySet="tbl_City" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tbl_City">
+          <Key>
+            <PropertyRef Name="cityid" />
+          </Key>
+          <Property Name="cityid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cityname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FKstateid" Type="Int32" />
+          <NavigationProperty Name="tbl_State" Relationship="Database1Model.FK__tbl_City__FKstat__36B12243" FromRole="tbl_City" ToRole="tbl_State" />
+        </EntityType>
+        <Association Name="FK__tbl_City__FKstat__36B12243">
+          <End Type="Database1Model.tbl_State" Role="tbl_State" Multiplicity="0..1" />
+          <End Type="Database1Model.tbl_City" Role="tbl_City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_State">
+              <PropertyRef Name="stateid" />
+            </Principal>
+            <Dependent Role="tbl_City">
+              <PropertyRef Name="FKstateid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="Database1Entities">
+          <EntitySetMapping Name="tbl_Country">
+            <EntityTypeMapping TypeName="Database1Model.tbl_Country">
+              <MappingFragment StoreEntitySet="tbl_Country">
+                <ScalarProperty Name="countryid" ColumnName="countryid" />
+                <ScalarProperty Name="countryname" ColumnName="countryname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_State">
+            <EntityTypeMapping TypeName="Database1Model.tbl_State">
+              <MappingFragment StoreEntitySet="tbl_State">
+                <ScalarProperty Name="stateid" ColumnName="stateid" />
+                <ScalarProperty Name="statename" ColumnName="statename" />
+                <ScalarProperty Name="FKcountryid" ColumnName="FKcountryid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_City">
+            <EntityTypeMapping TypeName="Database1Model.tbl_City">
+              <MappingFragment StoreEntitySet="tbl_City">
+                <ScalarProperty Name="FKstateid" ColumnName="FKstateid" />
+                <ScalarProperty Name="cityname" ColumnName="cityname" />
+                <ScalarProperty Name="cityid" ColumnName="cityid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

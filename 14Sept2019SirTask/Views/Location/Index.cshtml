@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm())
+{
+    <td colspan="3">
+        <tr>
+            <td>Select Country: </td>
+        </tr>
+        <tr>
+            <td>Select State: </td>
+        </tr>
+        <tr>
+            <td>Select City: </td>
+        </tr>
+    </td>
+
+    <table class="table table-responsive">
+        <tr>
+            <td>
+                @Html.DropDownList("countryname", null, "Select Country", htmlAttributes: new { @class = "form-control" })
+            </td>
+            <td>
+                @Html.DropDownList("statename", null, "Select State", htmlAttributes: new { @class = "form-control" })
+            </td>
+            <td>
+                @Html.DropDownList("cityname", null, "Select City", htmlAttributes: new { @class = "form-control" })
+            </td>
+        </tr>
+    </table>
+}
+
+<script>
+    $(document).ready(function () {
+        $("#countryname").change(function () {
+            alert($(this).val());
+
+            var stateurl = "@Url.Action("GetStatesByCountryId","Location")/" + $(this).val();
+
+            $.getJSON(stateurl, null, function (data) {
+
+                var htmlstate="<option>Select State State</option>"
+
+                $.each(data, function (i, v) {
+                    htmlstate += `<option value="${v.stateid}">${v.statename}</option>`;
+                });
+
+                $("#statename").html(htmlstate);
+            });
+        });
+
+
+        $("#statename").change(function () {
+            //alert($(this).val());
+
+            var cityurl = "@Url.Action("GetCitiesByStateId","Location")/" + $(this).val();
+
+            $.getJSON(cityurl, null, function (data) {
+
+                var htmlcity="<option>Select City</option>"
+
+                $.each(data, function (i, v) {
+                    htmlcity += `<option value="${v.cityid}">${v.cityname}</option>`;
+                });
+
+                $("#cityname").html(htmlcity);
+            });
+        });
+
+
+    });
+</script>
